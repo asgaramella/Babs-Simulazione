@@ -1,13 +1,17 @@
 package it.polito.tdp.babs;
 
 import java.net.URL;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 import java.util.ResourceBundle;
 
 import it.polito.tdp.babs.model.Model;
+import it.polito.tdp.babs.model.SimulationResult;
+import it.polito.tdp.babs.model.Simulator;
 import it.polito.tdp.babs.model.Statistics;
+import it.polito.tdp.babs.model.Trip;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.DatePicker;
@@ -62,6 +66,31 @@ public class BabsController {
 
 	@FXML
 	void doSimula(ActionEvent event) {
+		txtResult.clear();
+		
+		LocalDate ld= pickData.getValue();
+		if(ld==null || ld.getDayOfWeek()==DayOfWeek.SATURDAY || ld.getDayOfWeek()==DayOfWeek.SUNDAY ){
+			txtResult.setText("Selezionare un giorno feriale !");
+			return; //serve per terminare l'applicazione
+		}
+		
+		Double k= (double)sliderK.getValue()/100.0;
+		
+		List<Trip> tripsPick= model.getTripsForDayPick(ld);
+	    List<Trip> tripsDrop= model.getTripsForDayDrop(ld);
+		
+		Simulator sim= new Simulator();
+		sim.loadPick(tripsPick);
+		
+		
+		sim.loadDrop(tripsDrop);
+		sim.loadStations( k, model.getStazioni());
+		sim.run();
+		SimulationResult sr=sim.collectResults();
+		
+		txtResult.appendText("Nr di prese mancate "+sr.getNumberPickMiss()+"\n");
+		txtResult.appendText("Nr di ritorni mancati "+sr.getNumberDropMiss()+"\n");
+		
 		
 	}
 

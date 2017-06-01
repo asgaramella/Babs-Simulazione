@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+
 import it.polito.tdp.babs.db.BabsDAO;
 
 public class Model {
@@ -40,6 +41,16 @@ public class Model {
 		}
 		
 		return stats;
+	}
+
+	public List<Trip> getTripsForDayPick(LocalDate ld) {
+		
+		return dao.getTripsForDayPick(ld);
+	}
+	
+	public List<Trip> getTripsForDayDrop(LocalDate ld) {
+		
+		return dao.getTripsForDayDrop(ld);
 	}
 
 }

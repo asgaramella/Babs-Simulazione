@@ -1,5 +1,6 @@
 package it.polito.tdp.babs.db;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import it.polito.tdp.babs.model.Station;
@@ -20,5 +21,10 @@ public class TestDAO {
 		List<Trip> trips = dao.getAllTrips();
 		System.out.println("We have " + trips.size() + " trips");
 
+		
+		LocalDate ld= LocalDate.of(2013, 8, 29);
+		
+		System.out.println(dao.getPickNumber(stations.get(1), ld));
+		
 	}
 }

@@ -15,7 +15,7 @@ public class Main extends Application {
 		try {
 			
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("Babs.fxml")) ;
-			BorderPane root = (BorderPane)loader.load();
+			BorderPane root = loader.load();
 			
 			BabsController controller = loader.getController() ;
 			Model model = new Model() ;

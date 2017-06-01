@@ -61,4 +61,57 @@ public class BabsDAO {
 
 		return result;
 	}
+
+	public int getPickNumber(Station stemp, LocalDate ld) {
+		int result;
+		Connection conn = DBConnect.getInstance().getConnection();
+		String sql = "select count(*) as counter "+
+				"from trip "+
+				"where DATE(StartDate)=? and StartTerminal=?";
+		try {
+			PreparedStatement st = conn.prepareStatement(sql);
+			st.setDate(1, Date.valueOf(ld));
+			st.setInt(2, stemp.getStationID());
+			
+			ResultSet rs = st.executeQuery();
+			
+			rs.first();
+			result=rs.getInt("counter");
+			
+			st.close();
+			conn.close();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new RuntimeException("Error in database query", e);
+		}
+		return result;
+	}
+
+	public int getDropNumber(Station stemp, LocalDate ld) {
+		int result;
+		Connection conn = DBConnect.getInstance().getConnection();
+		String sql = "select count(*) as counter "+
+				"from trip "+
+				"where DATE(EndDate)=? and EndTerminal=?";
+		try {
+			PreparedStatement st = conn.prepareStatement(sql);
+			st.setDate(1, Date.valueOf(ld));
+			st.setInt(2, stemp.getStationID());
+			
+			ResultSet rs = st.executeQuery();
+			
+			rs.first();
+			result=rs.getInt("counter");
+			
+			st.close();
+			conn.close();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new RuntimeException("Error in database query", e);
+		}
+		return result;
+		
+	}
 }

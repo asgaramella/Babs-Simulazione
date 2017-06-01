@@ -2,9 +2,12 @@ package it.polito.tdp.babs;
 
 import java.net.URL;
 import java.time.LocalDate;
+import java.util.Collections;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import it.polito.tdp.babs.model.Model;
+import it.polito.tdp.babs.model.Statistics;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.DatePicker;
@@ -36,12 +39,30 @@ public class BabsController {
 
 	@FXML
 	void doContaTrip(ActionEvent event) {
-
+		
+		txtResult.clear();
+		
+		LocalDate ld= pickData.getValue();
+		if(ld==null){
+			txtResult.setText("Selezionare una data !");
+			return; //serve per terminare l'applicazione
+		}
+		
+		List<Statistics> stats=model.getStats(ld);
+		
+		Collections.sort(stats);
+		
+		for(Statistics stemp : stats){
+			if(stemp.getPick()==0)
+				txtResult.appendText(String.format("WARNING!! Stazione %s con 0 pick \n", stemp.getStazione().getName()));
+			else
+			txtResult.appendText(String.format("%s %d %d\n", stemp.getStazione().getName(), stemp.getPick(), stemp.getDrop()));
+		}
 	}
 
 	@FXML
 	void doSimula(ActionEvent event) {
-
+		
 	}
 
 	@FXML
